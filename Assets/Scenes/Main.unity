@@ -213,6 +213,9 @@ MonoBehaviour:
   - {fileID: 387445842076279106, guid: d040c4e32eaab5b4baa05e55f6658049, type: 3}
   - {fileID: 2575227910739222167, guid: 36b0dd4f25f95634790802e33cf06806, type: 3}
   - {fileID: 3818200823953200217, guid: aa0f9cddc4a94d7458d63e37e2c6492d, type: 3}
+  wallPrefabs:
+  - {fileID: -5413167772897522898, guid: 2da471099c48c13419b406192ced8598, type: 3}
+  exitCellPrefab: {fileID: 339546253113103821, guid: 38ff0ca325dc85b40812325a202b48c9, type: 3}
 --- !u!1 &1213740474
 GameObject:
   m_ObjectHideFlags: 0

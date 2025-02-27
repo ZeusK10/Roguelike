@@ -7,9 +7,19 @@ namespace ZeuskGames
     {
         private BoardManager _boardManager;
         private Vector2Int _cellPotition;
+        private bool _isGameOver;
 
         private void Update()
         {
+            if (_isGameOver)
+            {
+                if (Keyboard.current.enterKey.wasPressedThisFrame)
+                {
+                    GameManager.Instance.StartNewGame();
+                    _isGameOver = false;
+                }
+                return;
+            }
             Vector2Int newCellTarget = _cellPotition;
             bool hasMoved = false;
 
@@ -41,14 +51,24 @@ namespace ZeuskGames
                 if(cellData != null && cellData.passable)
                 {
                     GameManager.Instance.UpdateTick();
-                    MoveTo(newCellTarget);
                     
-                    if (cellData.containedObject != null)
+                    if (cellData.containedObject == null)
                     {
+                        MoveTo(newCellTarget);
+                    }
+                    else if(cellData.containedObject.PlayerWantsToEnter())
+                    {
+                        MoveTo(newCellTarget);
+                        //Call PlayerEntered AFTER moving the player! Otherwise not in cell yet
                         cellData.containedObject.PlayerEntered();
                     }
                 }
             }
+        }
+
+        public void GameOver()
+        {
+            _isGameOver = true;
         }
 
         private void MoveTo(Vector2Int cell)
