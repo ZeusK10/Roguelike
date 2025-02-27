@@ -17,6 +17,7 @@ namespace ZeuskGames
 		[SerializeField] private List<FoodObject> foodPrefabs;
 		[SerializeField] private List<WallObject> wallPrefabs;
 		[SerializeField] private ExitCellObject exitCellPrefab;
+		[SerializeField] private Enemy enemyPrefab;
 		private Tilemap _tilemap;
 		private CellData[,] _boardData;
 		private Grid _grid;
@@ -54,7 +55,7 @@ namespace ZeuskGames
 			Vector2Int endCoord = new Vector2Int(width - 2, height - 2);
 			AddObject(Instantiate(exitCellPrefab), endCoord);
 			_emptyCells.Remove(endCoord);
-			
+			GenerateEnemy();
 			GenerateWall();
 			GenerateFood();
 		}
@@ -71,6 +72,20 @@ namespace ZeuskGames
 				int wallIndex = Random.Range(0, wallPrefabs.Count);
 				WallObject newWall = Instantiate(wallPrefabs[wallIndex]);
 				AddObject(newWall,coord);
+			}
+		}
+		
+		private void GenerateEnemy()
+		{
+			int enemyCount = Random.Range(3, 6);
+			for (int i = 0; i < enemyCount; ++i)
+			{
+				int randomIndex = Random.Range(0, _emptyCells.Count);
+				Vector2Int coord = _emptyCells[randomIndex];
+
+				_emptyCells.RemoveAt(randomIndex);
+				Enemy enemy = Instantiate(enemyPrefab);
+				AddObject(enemy,coord);
 			}
 		}
 		

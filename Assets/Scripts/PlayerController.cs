@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,7 +9,27 @@ namespace ZeuskGames
         private BoardManager _boardManager;
         private Vector2Int _cellPotition;
         private bool _isGameOver;
+        [SerializeField] private float moveSpeed = 5f;
+        private bool _isMoving;
+        private Vector3 moveTarget;
+        private Animator _animator;
 
+        private void Start()
+        {
+            _animator = GetComponent<Animator>();
+        }
+
+        public Vector2Int GetCell()
+        {
+            return _cellPotition;
+        }
+
+        public void Init()
+        {
+            _isMoving = false;
+            _isGameOver = false;
+        }
+        
         private void Update()
         {
             if (_isGameOver)
@@ -16,10 +37,25 @@ namespace ZeuskGames
                 if (Keyboard.current.enterKey.wasPressedThisFrame)
                 {
                     GameManager.Instance.StartNewGame();
-                    _isGameOver = false;
                 }
                 return;
             }
+            
+            if (_isMoving)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
+
+                if (transform.position == moveTarget)
+                {
+                    _isMoving = false;
+                    _animator.SetBool("Moving",_isMoving);
+                    var cellData = _boardManager.GetCellData(_cellPotition);
+                    if(cellData.containedObject != null)
+                        cellData.containedObject.PlayerEntered();
+                }
+                return;
+            }
+            
             Vector2Int newCellTarget = _cellPotition;
             bool hasMoved = false;
 
@@ -52,15 +88,13 @@ namespace ZeuskGames
                 {
                     GameManager.Instance.UpdateTick();
                     
-                    if (cellData.containedObject == null)
+                    if (cellData.containedObject == null || cellData.containedObject.PlayerWantsToEnter())
                     {
-                        MoveTo(newCellTarget);
+                        MoveTo(newCellTarget,false);
                     }
-                    else if(cellData.containedObject.PlayerWantsToEnter())
+                    else
                     {
-                        MoveTo(newCellTarget);
-                        //Call PlayerEntered AFTER moving the player! Otherwise not in cell yet
-                        cellData.containedObject.PlayerEntered();
+                        _animator.SetTrigger("Attack");
                     }
                 }
             }
@@ -71,16 +105,27 @@ namespace ZeuskGames
             _isGameOver = true;
         }
 
-        private void MoveTo(Vector2Int cell)
+        private void MoveTo(Vector2Int cell, bool isImmidiate)
         {
             _cellPotition = cell;
-            transform.position = _boardManager.CellToWorld(cell);
+            if (isImmidiate)
+            {
+                _isMoving = false;
+                transform.position = _boardManager.CellToWorld(cell);
+            }
+            else
+            {
+                _isMoving = true;
+                moveTarget = _boardManager.CellToWorld(cell);
+            }
+            _animator.SetBool("Moving",_isMoving);
         }
         
         public void Spawn(BoardManager boardManager, Vector2Int cell)
         {
             _boardManager = boardManager;
-            MoveTo(cell);
+            _cellPotition = cell;
+            MoveTo(cell,true);
         }
     }
 }

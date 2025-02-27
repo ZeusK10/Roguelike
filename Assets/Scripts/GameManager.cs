@@ -14,7 +14,7 @@ namespace ZeuskGames
         [SerializeField] private UIDocument uiDocument;
         private Label _foodLabel;
         private TurnManager _turnManager;
-        private const int MAX_FOOD_AMOUNT = 10;
+        private const int MAX_FOOD_AMOUNT = 100;
         private int _foodAmount;
         private int _currentLevel = 0;
         private VisualElement _gameOverPanel;
@@ -44,6 +44,16 @@ namespace ZeuskGames
             StartNewGame();
         }
 
+        public BoardManager GetBoardManager()
+        {
+            return boardManager;
+        }
+        
+        public PlayerController GetPlayerController()
+        {
+            return playerController;
+        }
+
         public void StartNewGame()
         {
             _currentLevel = 0;
@@ -57,6 +67,7 @@ namespace ZeuskGames
         {
             boardManager.Clean();
             boardManager.Init();
+            playerController.Init();
             playerController.Spawn(boardManager, new Vector2Int(1,1));
 
             _currentLevel++;

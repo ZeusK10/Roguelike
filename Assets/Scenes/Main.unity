@@ -216,6 +216,7 @@ MonoBehaviour:
   wallPrefabs:
   - {fileID: -5413167772897522898, guid: 2da471099c48c13419b406192ced8598, type: 3}
   exitCellPrefab: {fileID: 339546253113103821, guid: 38ff0ca325dc85b40812325a202b48c9, type: 3}
+  enemyPrefab: {fileID: 8173542621584188950, guid: fba2dfe87d027cd4ca48201e4f5f8f29, type: 3}
 --- !u!1 &1213740474
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,6 +279,7 @@ GameObject:
   - component: {fileID: 1226322269}
   - component: {fileID: 1226322268}
   - component: {fileID: 1226322267}
+  - component: {fileID: 1226322270}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -297,6 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03d55ae92082628419447e3ccb340cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 1
 --- !u!212 &1226322268
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -367,6 +370,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1226322270
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226322266}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8e3abc9e1f8ac3240827eeddcd1907be, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1325291278
 GameObject:
   m_ObjectHideFlags: 0
